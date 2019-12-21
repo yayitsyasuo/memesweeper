@@ -7,7 +7,7 @@ class SpriteCodex
 {
 public:
 	// width and height of all tiles
-	static constexpr int tileSize = 16;
+	static constexpr int tileSize = 16; // i changed this shit right here - Can't do it, sprite code doesn't work this way
 	// base color for all tiles
 	static constexpr Color baseColor = { 192,192,192 };
 	// 16x16 tile sprites assume (192,192,192) background and top left origin
