@@ -39,8 +39,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	for(int x=0; x<2; x++)
-	meme.ChangeState(x,x*2,MineField::Tiles::State::Revealed); //  ma test tshit
+	
 
 }
 

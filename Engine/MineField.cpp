@@ -29,7 +29,7 @@ void MineField::Draw()
 	int x = 0;
 	while (x != (height * width + 1))
 	{
-		switch (Tiles[x])
+		switch (Tiles[x].returnState())
 		{
 		case Tiles::State::Hidden:
 			SpriteCodex::DrawTileButton(GivePos(x), gfx);
@@ -37,10 +37,10 @@ void MineField::Draw()
 		case Tiles::State::Revealed:
 			SpriteCodex::DrawTile0(GivePos(x), gfx);
 			break;
-		case Tiles::State::BOOM:
-		 // case Tiles::State::Revealed: leider kann ich dies nicht zweimal benutzen
-			SpriteCodex::DrawTileBomb(GivePos(x), gfx);
-			break;
+	//	case Tiles::State::BOOM:
+	//	 // case Tiles::State::Revealed: leider kann ich dies nicht zweimal benutzen
+	//		SpriteCodex::DrawTileBomb(GivePos(x), gfx);
+	//		break;
 		}
 		x++;
 
@@ -54,20 +54,16 @@ void MineField::DrawBackground()
 
 void MineField::SpawnBOOM()
 {
+	
 	std::random_device koursi;
 	std::mt19937 rng(koursi());
    std::uniform_int_distribution<int> yDist(0,height);
    std::uniform_int_distribution<int> xDist(0, width);
    
-   Tiles[ yDist( rng ) * xDist( rng ) ];
-}
-
-void MineField::ChangeState(int x, int y, Tiles::State newState)
-{
-	Tiles[y * x] = newState;
+   Tiles[ yDist( rng ) * xDist( rng ) ].HasBomb = true;
 }
 
 MineField::Tiles::State MineField::Tiles::returnState()
 {
-	return State();
+	return state;
 }

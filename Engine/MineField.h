@@ -16,7 +16,7 @@ public:
 		State returnState();
 		bool HasBomb = false;
 	private:
-		Vei2 loc;
+		State state = { State::Hidden };
 	};
 public:
 	MineField(Graphics& gfx);
@@ -24,12 +24,15 @@ public:
 	void Draw();
 	void DrawBackground();
 	void SpawnBOOM();
-	void ChangeState(int x, int y, Tiles::State);
+	//void ChangeState(int x, int y, Tiles::State);
 	//Tiles::State ReturnState();
 private:
 	static constexpr int height = 15;
 	static constexpr int width = 15;
-	Tiles::State Tiles[height*width] = { Tiles::State::Hidden };
+	// Tiles::State Tiles[height*width] = { Tiles::State::Hidden }; would be cool but this way
+	// I cannot use any function inside Tiles
+	// Would be still fine but switch doesn't allow twice the same case 
+	Tiles Tiles[height*width];
 	Graphics &gfx;
 };
 
