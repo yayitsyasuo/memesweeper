@@ -38,11 +38,10 @@ void Game::Go()
 }
 
 void Game::UpdateModel()
-{ //test
-	for (int i = 0; i < 220; i++)
+{ 
+	if (wnd.mouse.LeftIsPressed())
 	{
-		for (int x = 0; x < 220; x++)
-		meme.ChangeState(Vei2(x,i), MineField::Tiles::State::Revealed);
+		meme.ChangeState(Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY()), MineField::Tiles::State::Revealed);
 	}
 }
 

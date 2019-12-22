@@ -79,7 +79,7 @@ void MineField::ChangeState(Vei2(pos), Tiles::State newState)
 	assert(pos.x < width*SpriteCodex::tileSize);
 	assert(pos.y < height*SpriteCodex::tileSize);
 	Vei2 ConvertedPos = pos / SpriteCodex::tileSize;
-	Tiles[ConvertedPos.x*ConvertedPos.y].UpdateState(newState);
+	Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(newState);
 }
 
 MineField::Tiles::State MineField::Tiles::returnState()
