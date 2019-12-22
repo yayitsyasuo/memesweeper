@@ -1,5 +1,6 @@
 #include "MineField.h"
-
+#include <random>
+#include <assert.h>
 
 MineField::MineField(Graphics & gfx)
 	:
@@ -7,24 +8,60 @@ MineField::MineField(Graphics & gfx)
 {
 }
 
-Vei2 MineField::GivePos(int x, int y)
+Vei2 MineField::GivePos(int a)
 {
-	return Vei2(x*SpriteCodex::tileSize, y*SpriteCodex::tileSize);
+	assert(a >= 0);
+	if (a > width)
+	{
+		int y = a / width;
+		int x = a - y * width;
+		return Vei2(x * SpriteCodex::tileSize, y * SpriteCodex::tileSize);
+	}
+	else
+		return Vei2(a * SpriteCodex::tileSize,0);
 }
 
 void MineField::Draw()
 {
 	DrawBackground();
-	for (int y = 0; y < height; y++)
+	int x = 0;
+	while (x != (height * width + 1))
 	{
-		for (int x = 0; x < width; x++)
+		switch (Tiles[x])
 		{
-			SpriteCodex::DrawTileButton(GivePos(x, y), gfx);
+		case Tiles::State::Hidden:
+			SpriteCodex::DrawTileButton(GivePos(x), gfx);
+			break;
+		case Tiles::State::Revealed:
+			SpriteCodex::DrawTile0(GivePos(x), gfx);
+			break;
 		}
+		x++;
+
 	}
 }
 
 void MineField::DrawBackground()
 {
-	gfx.DrawRect(0,0,SpriteCodex::tileSize*height, SpriteCodex::tileSize*width, SpriteCodex::baseColor);
+	gfx.DrawRect(0, 0,SpriteCodex::tileSize*height, SpriteCodex::tileSize*width, SpriteCodex::baseColor);
+}
+
+void MineField::SpawnBOOM()
+{
+	std::random_device koursi;
+	std::mt19937 rng(koursi());
+   std::uniform_int_distribution<int> yDist(0,height);
+   std::uniform_int_distribution<int> xDist(0, width);
+   
+   Tiles[ yDist( rng ) * width * SpriteCodex::tileSize + xDist( rng ) ]= Tiles::State::BOOM;
+}
+
+void MineField::ChangeState(int x, int y, Tiles::State newState)
+{
+	Tiles[y * x] = newState;
+}
+
+MineField::Tiles::State MineField::Tiles::returnState()
+{
+	return State();
 }

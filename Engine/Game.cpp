@@ -39,6 +39,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	meme.ChangeState(5,6,MineField::Tiles::State::Revealed); //  ma test tshit
 }
 
 void Game::ComposeFrame()
