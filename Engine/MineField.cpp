@@ -76,15 +76,18 @@ void MineField::SpawnBOOM()
 
 bool MineField::InsideTheField(const Vei2 & pos) const
 {
-	return pos.x <= width*SpriteCodex::tileSize && pos.y <= height*SpriteCodex::tileSize;
+	return pos.x <= width*SpriteCodex::tileSize && pos.y < height*SpriteCodex::tileSize;
 }
 
 void MineField::ChangeState(const Vei2& pos, const Tiles::State newState)
 {
 	assert(pos.x <= width*SpriteCodex::tileSize);
 	assert(pos.y <= height*SpriteCodex::tileSize);
-	Vei2 ConvertedPos = pos / SpriteCodex::tileSize;
-	Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(newState);
+	if (Tiles[pos.y * width + pos.x].returnState() == Tiles::State::Revealed)
+	{
+		Vei2 ConvertedPos = pos / SpriteCodex::tileSize;
+		Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(newState);
+	}
 }
 
 MineField::Tiles::State MineField::Tiles::returnState() const

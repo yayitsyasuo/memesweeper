@@ -49,7 +49,9 @@ void Game::UpdateModel()
 	{
 		Vei2 pos = Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY());
 		if (meme.InsideTheField(pos))
-		meme.ChangeState(pos, MineField::Tiles::State::Flagged);
+		{
+			meme.ChangeState(pos, MineField::Tiles::State::Flagged);
+		}
 	}
 }
 
