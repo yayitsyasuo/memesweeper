@@ -13,19 +13,19 @@ public:
 			Revealed
 		};
 	public:
-		State returnState();
-		void UpdateState(State state);
+		State returnState() const;
+		void UpdateState(const State state);
 		bool HasBomb = false;
 	private:
 		State state = { State::Hidden };
 	};
 public:
 	MineField(Graphics& gfx);
-	Vei2 GivePos(int x);
+	Vei2 GivePos(const int x) const;
 	void Draw();
 	void DrawBackground();
 	void SpawnBOOM();
-	void ChangeState(Vei2(pos), Tiles::State newState);
+	void ChangeState(const Vei2(pos), const Tiles::State newState);
 	//Tiles::State ReturnState();
 private:
 	static constexpr int height = 15;

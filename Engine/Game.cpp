@@ -43,6 +43,10 @@ void Game::UpdateModel()
 	{
 		meme.ChangeState(Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY()), MineField::Tiles::State::Revealed);
 	}
+	if (wnd.mouse.RightIsPressed())
+	{
+		meme.ChangeState(Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY()), MineField::Tiles::State::Flagged);
+	}
 }
 
 void Game::ComposeFrame()
