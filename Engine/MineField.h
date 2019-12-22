@@ -10,11 +10,11 @@ public:
 		enum class State {
 			Hidden,
 			Flagged,
-			Revealed,
-			BOOM
+			Revealed
 		};
 	public:
 		State returnState();
+		bool HasBomb = false;
 	private:
 		Vei2 loc;
 	};

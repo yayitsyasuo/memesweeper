@@ -6,14 +6,16 @@ MineField::MineField(Graphics & gfx)
 	:
 	gfx(gfx)
 {
+	for (int i = 0; i < 10; i++)
+		SpawnBOOM();
 }
 
 Vei2 MineField::GivePos(int a)
 {
 	assert(a >= 0);
-	if (a > width)
+	if (a >= width)
 	{
-		int y = a / width;
+		int y =  a / width ;
 		int x = a - y * width;
 		return Vei2(x * SpriteCodex::tileSize, y * SpriteCodex::tileSize);
 	}
@@ -35,6 +37,10 @@ void MineField::Draw()
 		case Tiles::State::Revealed:
 			SpriteCodex::DrawTile0(GivePos(x), gfx);
 			break;
+		case Tiles::State::BOOM:
+		 // case Tiles::State::Revealed: leider kann ich dies nicht zweimal benutzen
+			SpriteCodex::DrawTileBomb(GivePos(x), gfx);
+			break;
 		}
 		x++;
 
@@ -53,7 +59,7 @@ void MineField::SpawnBOOM()
    std::uniform_int_distribution<int> yDist(0,height);
    std::uniform_int_distribution<int> xDist(0, width);
    
-   Tiles[ yDist( rng ) * width * SpriteCodex::tileSize + xDist( rng ) ]= Tiles::State::BOOM;
+   Tiles[ yDist( rng ) * xDist( rng ) ];
 }
 
 void MineField::ChangeState(int x, int y, Tiles::State newState)
