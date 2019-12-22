@@ -48,3 +48,4 @@ Vei2 RectI::GetCenter() const
 {
 	return Vei2( (left + right) / 2,(top + bottom) / 2 );
 }
+

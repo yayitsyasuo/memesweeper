@@ -24,8 +24,7 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd ),
-	meme(gfx)
+	gfx( wnd )
 {
 }
 
@@ -41,15 +40,20 @@ void Game::UpdateModel()
 { 
 	if (wnd.mouse.LeftIsPressed())
 	{
-		meme.ChangeState(Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY()), MineField::Tiles::State::Revealed);
+
+		Vei2 pos = Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY());
+		if(meme.InsideTheField(pos))
+		meme.ChangeState(pos, MineField::Tiles::State::Revealed);
 	}
 	if (wnd.mouse.RightIsPressed())
 	{
-		meme.ChangeState(Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY()), MineField::Tiles::State::Flagged);
+		Vei2 pos = Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY());
+		if (meme.InsideTheField(pos))
+		meme.ChangeState(pos, MineField::Tiles::State::Flagged);
 	}
 }
 
 void Game::ComposeFrame()
 {
-	meme.Draw();
+	meme.Draw(gfx);
 }
