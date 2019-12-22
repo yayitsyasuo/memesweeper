@@ -38,9 +38,12 @@ void Game::Go()
 }
 
 void Game::UpdateModel()
-{
-	
-
+{ //test
+	for (int i = 0; i < 220; i++)
+	{
+		for (int x = 0; x < 220; x++)
+		meme.ChangeState(Vei2(x,i), MineField::Tiles::State::Revealed);
+	}
 }
 
 void Game::ComposeFrame()

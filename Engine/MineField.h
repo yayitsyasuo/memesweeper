@@ -14,6 +14,7 @@ public:
 		};
 	public:
 		State returnState();
+		void UpdateState(State state);
 		bool HasBomb = false;
 	private:
 		State state = { State::Hidden };
@@ -24,7 +25,7 @@ public:
 	void Draw();
 	void DrawBackground();
 	void SpawnBOOM();
-	//void ChangeState(int x, int y, Tiles::State);
+	void ChangeState(Vei2(pos), Tiles::State newState);
 	//Tiles::State ReturnState();
 private:
 	static constexpr int height = 15;

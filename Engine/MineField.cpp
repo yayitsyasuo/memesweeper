@@ -6,7 +6,7 @@ MineField::MineField(Graphics & gfx)
 	:
 	gfx(gfx)
 {
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 15; i++)
 		SpawnBOOM();
 }
 
@@ -35,7 +35,13 @@ void MineField::Draw()
 			SpriteCodex::DrawTileButton(GivePos(x), gfx);
 			break;
 		case Tiles::State::Revealed:
-			SpriteCodex::DrawTile0(GivePos(x), gfx);
+			if (Tiles[x].HasBomb)
+			{
+				SpriteCodex::DrawTile0(GivePos(x), gfx);
+				SpriteCodex::DrawTileBomb(GivePos(x), gfx);
+			}
+			else
+				SpriteCodex::DrawTile0(GivePos(x), gfx);
 			break;
 	//	case Tiles::State::BOOM:
 	//	 // case Tiles::State::Revealed: leider kann ich dies nicht zweimal benutzen
@@ -45,6 +51,11 @@ void MineField::Draw()
 		x++;
 
 	}
+}
+
+void MineField::Tiles::UpdateState(State Newstate)
+{
+	state = Newstate;
 }
 
 void MineField::DrawBackground()
@@ -61,6 +72,14 @@ void MineField::SpawnBOOM()
    std::uniform_int_distribution<int> xDist(0, width);
    
    Tiles[ yDist( rng ) * xDist( rng ) ].HasBomb = true;
+}
+
+void MineField::ChangeState(Vei2(pos), Tiles::State newState)
+{
+	assert(pos.x < width*SpriteCodex::tileSize);
+	assert(pos.y < height*SpriteCodex::tileSize);
+	Vei2 ConvertedPos = pos / SpriteCodex::tileSize;
+	Tiles[ConvertedPos.x*ConvertedPos.y].UpdateState(newState);
 }
 
 MineField::Tiles::State MineField::Tiles::returnState()

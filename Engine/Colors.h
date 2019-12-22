@@ -46,11 +46,11 @@ public:
 		:
 		Color( (x << 24u) | col.dword )
 	{}
-	Color& operator =( Color color )
-	{
-		dword = color.dword;
-		return *this;
-	}
+//Color& operator =( Color color )
+//{
+//	dword = color.dword;
+//	return *this;
+//}
 	constexpr unsigned char GetX() const
 	{
 		return dword >> 24u;
