@@ -6,7 +6,7 @@ MineField::MineField(Graphics & gfx)
 	:
 	gfx(gfx)
 {
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 20; i++)
 		SpawnBOOM();
 }
 
@@ -71,7 +71,7 @@ void MineField::SpawnBOOM()
    std::uniform_int_distribution<int> yDist(0,height);
    std::uniform_int_distribution<int> xDist(0, width);
    
-   Tiles[ yDist( rng ) * xDist( rng ) ].HasBomb = true;
+   Tiles[ yDist( rng ) * width +  xDist( rng ) ].HasBomb = true;
 }
 
 void MineField::ChangeState(const Vei2(pos), const Tiles::State newState)
