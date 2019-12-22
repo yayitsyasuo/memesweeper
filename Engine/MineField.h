@@ -26,7 +26,8 @@ public:
 	void DrawBackground(Graphics& gfx);
 	void SpawnBOOM();
 	void ChangeState(const Vei2& pos, const Tiles::State newState);
-	bool InsideTheField(const Vei2& pos) const;
+	void ChangeStateToFlagged(const Vei2& pos); // // flagged needs tile to be hidden
+	bool InsideTheField(const Vei2& pos) const; // that universal Update won't work here
 	//Tiles::State ReturnState();
 private:
 	static constexpr int height = 18;

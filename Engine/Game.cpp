@@ -38,19 +38,18 @@ void Game::Go()
 
 void Game::UpdateModel()
 { 
-	if (wnd.mouse.LeftIsPressed())
+	if ( wnd.mouse.LeftIsPressed() ) //REVEAL
 	{
-
-		Vei2 pos = Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY());
-		if(meme.InsideTheField(pos))
-		meme.ChangeState(pos, MineField::Tiles::State::Revealed);
+		Vei2 pos = Vei2( wnd.mouse.GetPosX(), wnd.mouse.GetPosY() );
+		if( meme.InsideTheField( pos ) )
+		meme.ChangeState( pos, MineField::Tiles::State::Revealed );
 	}
-	if (wnd.mouse.RightIsPressed())
+	if ( wnd.mouse.RightIsPressed() ) // FLAG
 	{
-		Vei2 pos = Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY());
-		if (meme.InsideTheField(pos))
+		Vei2 pos = Vei2( wnd.mouse.GetPosX(), wnd.mouse.GetPosY() );
+		if ( meme.InsideTheField( pos ) )
 		{
-			meme.ChangeState(pos, MineField::Tiles::State::Flagged);
+			meme.ChangeStateToFlagged( pos );
 		}
 	}
 }

@@ -81,16 +81,26 @@ bool MineField::InsideTheField(const Vei2 & pos) const
 
 void MineField::ChangeState(const Vei2& pos, const Tiles::State newState)
 {
-	assert(pos.x <= width*SpriteCodex::tileSize);
-	assert(pos.y <= height*SpriteCodex::tileSize);
-	if (Tiles[pos.y * width + pos.x].returnState() == Tiles::State::Revealed)
-	{
-		Vei2 ConvertedPos = pos / SpriteCodex::tileSize;
-		Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(newState);
-	}
+	assert(pos.x <= width * SpriteCodex::tileSize);
+	assert(pos.y <= height * SpriteCodex::tileSize);
+
+	Vei2 ConvertedPos = pos / SpriteCodex::tileSize;
+	Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(newState);
 }
 
 MineField::Tiles::State MineField::Tiles::returnState() const
 {
 	return state;
+}
+
+void MineField::ChangeStateToFlagged(const Vei2& pos)
+{
+	assert(pos.x <= width * SpriteCodex::tileSize);
+	assert(pos.y <= height * SpriteCodex::tileSize);
+
+	Vei2 ConvertedPos = pos / SpriteCodex::tileSize;
+	if (Tiles[ConvertedPos.y*width + ConvertedPos.x].returnState() == Tiles::State::Hidden) // flagged needs tile to be hidden
+	{
+		Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(Tiles::State::Flagged);
+	}
 }
