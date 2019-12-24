@@ -38,6 +38,16 @@ void Game::Go()
 
 void Game::UpdateModel()
 { 
+	//just a test
+	for (int x = 0; x < 200; x++)
+	{
+		for (int y = 0; y < 200; y++)
+		{
+			Vei2 pos = { x,y };
+			meme.ChangeState(pos, MineField::Tiles::State::Revealed);
+		}
+	}
+	// just a test
 
 	while (!wnd.mouse.IsEmpty())
 	{

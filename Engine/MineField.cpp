@@ -8,6 +8,7 @@ MineField::MineField()
 {
 	for (int i = 0; i < 20; i++)
 		SpawnBOOM();
+	countNeighbours();
 }
 
 Vei2 MineField::GivePos(const int a) const
@@ -45,8 +46,12 @@ void MineField::Draw(Graphics& gfx)
 				SpriteCodex::DrawTile0(GivePos(x), gfx);
 				SpriteCodex::DrawTileBomb(GivePos(x), gfx);
 			}
-			else
+			else if (Tiles[x].nNeighboursGimme() == 0)
+			{
 				SpriteCodex::DrawTile0(GivePos(x), gfx);
+			}
+			else
+				SpriteCodex::DrawNeighbourNumber(Tiles[x].nNeighboursGimme(), GivePos(x), gfx);
 			break;
 		}
 		x++;
@@ -62,6 +67,11 @@ void MineField::Tiles::UpdateState(const State Newstate)
 void MineField::Tiles::nNeighboursIncrease()
 {
 	nNeighbours++;
+}
+
+int MineField::Tiles::nNeighboursGimme()
+{
+	return nNeighbours;
 }
 
 void MineField::DrawBackground(Graphics& gfx)
@@ -90,25 +100,28 @@ void MineField::countNeighbours()
 { 
 	for (int x = width + 1; x <= height * width - width - 1; x++)
 	{
-		int top = (x - width);
-		int bottom = (x + width);
+		if (!Tiles[x].HasBomb)
+		{
+			int top = (x - width);
+			int bottom = (x + width);
 
-		if (Tiles[top].HasBomb)
-			Tiles[top].nNeighboursIncrease();
-		if (Tiles[top - 1].HasBomb)
-			Tiles[top - 1].nNeighboursIncrease();
-		if (Tiles[top + 1].HasBomb)
-			Tiles[top + 1].nNeighboursIncrease();
-		if (Tiles[x + 1].HasBomb)
-			Tiles[x + 1].nNeighboursIncrease();
-		if (Tiles[x - 1].HasBomb)
-			Tiles[x - 1].nNeighboursIncrease();
-		if (Tiles[bottom].HasBomb)
-			Tiles[bottom].nNeighboursIncrease();
-		if (Tiles[bottom+1].HasBomb)
-			Tiles[bottom+1].nNeighboursIncrease();
-		if (Tiles[bottom-1].HasBomb)
-			Tiles[bottom-1].nNeighboursIncrease();
+			if (Tiles[top].HasBomb)
+				Tiles[x].nNeighboursIncrease();
+			if (Tiles[top - 1].HasBomb)
+				Tiles[x].nNeighboursIncrease();
+			if (Tiles[top + 1].HasBomb)
+				Tiles[x].nNeighboursIncrease();
+			if (Tiles[x + 1].HasBomb)
+				Tiles[x].nNeighboursIncrease();
+			if (Tiles[x - 1].HasBomb)
+				Tiles[x].nNeighboursIncrease();
+			if (Tiles[bottom].HasBomb)
+				Tiles[x].nNeighboursIncrease();
+			if (Tiles[bottom + 1].HasBomb)
+				Tiles[x].nNeighboursIncrease();
+			if (Tiles[bottom - 1].HasBomb)
+				Tiles[x].nNeighboursIncrease();
+		}
 	}
 }
 

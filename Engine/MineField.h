@@ -17,6 +17,7 @@ public:
 		void UpdateState(const State state);
 		bool HasBomb = false;
 		void nNeighboursIncrease();
+		int nNeighboursGimme();
 	private:
 		int nNeighbours = 0;
 		State state = { State::Hidden };
