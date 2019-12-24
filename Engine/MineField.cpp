@@ -1,6 +1,8 @@
 #include "MineField.h"
 #include <random>
 #include <assert.h>
+#include <algorithm>
+#include "Graphics.h"
 
 MineField::MineField()
 {
@@ -57,6 +59,11 @@ void MineField::Tiles::UpdateState(const State Newstate)
 	state = Newstate;
 }
 
+void MineField::Tiles::nNeighboursIncrease()
+{
+	nNeighbours++;
+}
+
 void MineField::DrawBackground(Graphics& gfx)
 {
 	const int whyudodistome = SpriteCodex::tileSize*height;
@@ -77,6 +84,32 @@ void MineField::SpawnBOOM()
 bool MineField::InsideTheField(const Vei2 & pos) const
 {
 	return pos.x <= width*SpriteCodex::tileSize && pos.y < height*SpriteCodex::tileSize;
+}
+
+void MineField::countNeighbours()
+{ 
+	for (int x = width + 1; x <= height * width - width - 1; x++)
+	{
+		int top = (x - width);
+		int bottom = (x + width);
+
+		if (Tiles[top].HasBomb)
+			Tiles[top].nNeighboursIncrease();
+		if (Tiles[top - 1].HasBomb)
+			Tiles[top - 1].nNeighboursIncrease();
+		if (Tiles[top + 1].HasBomb)
+			Tiles[top + 1].nNeighboursIncrease();
+		if (Tiles[x + 1].HasBomb)
+			Tiles[x + 1].nNeighboursIncrease();
+		if (Tiles[x - 1].HasBomb)
+			Tiles[x - 1].nNeighboursIncrease();
+		if (Tiles[bottom].HasBomb)
+			Tiles[bottom].nNeighboursIncrease();
+		if (Tiles[bottom+1].HasBomb)
+			Tiles[bottom+1].nNeighboursIncrease();
+		if (Tiles[bottom-1].HasBomb)
+			Tiles[bottom-1].nNeighboursIncrease();
+	}
 }
 
 void MineField::ChangeState(const Vei2& pos, const Tiles::State newState)

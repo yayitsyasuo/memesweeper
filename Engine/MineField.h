@@ -16,7 +16,9 @@ public:
 		State returnState() const;
 		void UpdateState(const State state);
 		bool HasBomb = false;
+		void nNeighboursIncrease();
 	private:
+		int nNeighbours = 0;
 		State state = { State::Hidden };
 	};
 public:
@@ -28,6 +30,7 @@ public:
 	void ChangeState(const Vei2& pos, const Tiles::State newState);
 	void ChangeStateToFlagged(const Vei2& pos); // // flagged needs tile to be hidden
 	bool InsideTheField(const Vei2& pos) const; // that universal Update won't work here
+	void countNeighbours();
 	//Tiles::State ReturnState();
 private:
 	static constexpr int height = 18;
