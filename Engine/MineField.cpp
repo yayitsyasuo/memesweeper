@@ -29,11 +29,17 @@ void MineField::Draw(Graphics& gfx)
 {
 	DrawBackground(gfx);
 	int x = 0;
+	if (hiddenBois == 0) // win condition drawing?
+	{
+		SpriteCodex::DrawWin(Vei2 (350, 300), gfx);
+	}
+	hiddenBois = 0;
 	while (x != (height * width))
 	{
 		switch (Tiles[x].returnState())
 		{
 		case Tiles::State::Hidden:
+			hiddenBois++;
 			SpriteCodex::DrawTileButton(GivePos(x), gfx);
 			if (ufucked)
 			{
@@ -71,7 +77,7 @@ void MineField::Draw(Graphics& gfx)
 			break;
 		}
 		x++;
-
+		
 	}
 }
 

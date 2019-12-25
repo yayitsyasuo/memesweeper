@@ -40,6 +40,7 @@ private:
 	static constexpr int height = 18;
 	static constexpr int width = 18;
 	bool ufucked = false;
+	int hiddenBois = 0;
 	// Tiles::State Tiles[height*width] = { Tiles::State::Hidden }; would be cool but this way
 	// I cannot use any function inside Tiles
 	// Would be still fine but switch doesn't allow twice the same case 
