@@ -24,6 +24,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "MineField.h"
+#include "Frame.h"
 
 class Game
 {
@@ -45,4 +46,5 @@ private:
 	/*  User Variables              */
 	/********************************/
 	MineField meme;
+	Frame f;
 };

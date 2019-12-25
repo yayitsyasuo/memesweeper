@@ -21,10 +21,12 @@
 #include "MainWindow.h"
 #include "Game.h"
 
+
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	f(gfx)
 {
 }
 
@@ -64,4 +66,5 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	meme.Draw(gfx);
+	f.DrawAlles();
 }
