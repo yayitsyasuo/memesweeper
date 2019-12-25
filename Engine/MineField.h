@@ -35,6 +35,8 @@ public:
 	bool amifucked();
 	//Tiles::State ReturnState();
 private:
+	const Vei2 CenteredTopLeft = { 250, 150 };
+	const Vei2 CenteredBottomRight = { 250 + height*SpriteCodex::tileSize, 150 + height * SpriteCodex::tileSize };
 	static constexpr int height = 18;
 	static constexpr int width = 18;
 	bool ufucked = false;

@@ -19,10 +19,10 @@ Vei2 MineField::GivePos(const int a) const // converts into coordinates
 	{
 		int y =  a / width ;
 		int x = a - y * width;
-		return Vei2(x * SpriteCodex::tileSize, y * SpriteCodex::tileSize);
+		return Vei2(CenteredTopLeft.x + x * SpriteCodex::tileSize, CenteredTopLeft.y + y * SpriteCodex::tileSize);
 	}
 	else
-		return Vei2(a * SpriteCodex::tileSize,0);
+		return Vei2(CenteredTopLeft.x + a * SpriteCodex::tileSize, CenteredTopLeft.y);
 }
 
 void MineField::Draw(Graphics& gfx)
@@ -92,8 +92,9 @@ int MineField::Tiles::nNeighboursGimme()
 
 void MineField::DrawBackground(Graphics& gfx)
 {
-	const int whyudodistome = SpriteCodex::tileSize*height;
-	gfx.DrawRect(0, 0, whyudodistome, whyudodistome, SpriteCodex::baseColor);
+	const int whyudodistome = SpriteCodex::tileSize*height ;
+	gfx.DrawRect(CenteredTopLeft.x, CenteredTopLeft.y, CenteredBottomRight.x,
+		CenteredBottomRight.y, SpriteCodex::baseColor);
 }
 
 void MineField::SpawnBOOM()
@@ -108,8 +109,9 @@ void MineField::SpawnBOOM()
 
 bool MineField::InsideTheField(const Vei2 & pos) const
 {
-	return pos.x <= width * SpriteCodex::tileSize && pos.y < height*SpriteCodex::tileSize
-		&& pos.x >= 0 && pos.y >= 0;
+	return pos.x <= CenteredTopLeft.x + width * SpriteCodex::tileSize &&
+		pos.y < CenteredTopLeft.y + height * SpriteCodex::tileSize
+		&& pos.x >= CenteredTopLeft.x && pos.y >= CenteredTopLeft.y;
 }
 
 void MineField::countNeighbours()
@@ -154,10 +156,11 @@ bool MineField::amifucked()
 
 void MineField::ChangeState(const Vei2& pos, const Tiles::State newState)
 {
-	assert(pos.x <= width * SpriteCodex::tileSize);
-	assert(pos.y <= height * SpriteCodex::tileSize);
+	assert(pos.x <= CenteredTopLeft.x + width * SpriteCodex::tileSize);
+	assert(pos.y <= CenteredTopLeft.y + height * SpriteCodex::tileSize);
 
-	Vei2 ConvertedPos = pos / SpriteCodex::tileSize;
+	// plane was at first in the left top corner
+	Vei2 ConvertedPos =( pos - CenteredTopLeft ) / SpriteCodex::tileSize; // you wouldn't get it
 	Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(newState);
 }
 
@@ -168,10 +171,11 @@ MineField::Tiles::State MineField::Tiles::returnState() const
 
 void MineField::ChangeStateToFlagged(const Vei2& pos)
 {
-	assert(pos.x <= width * SpriteCodex::tileSize);
-	assert(pos.y <= height * SpriteCodex::tileSize);
+	assert(pos.x <= CenteredTopLeft.x + width * SpriteCodex::tileSize);
+	assert(pos.y <= CenteredTopLeft.y + height * SpriteCodex::tileSize);
 
-	Vei2 ConvertedPos = pos / SpriteCodex::tileSize;
+	//pos was originally at top left corner, now it's shifted
+	Vei2 ConvertedPos = (pos- CenteredTopLeft) / SpriteCodex::tileSize;
 	if (Tiles[ConvertedPos.y*width + ConvertedPos.x].returnState() == Tiles::State::Hidden) // flagged needs tile to be hidden
 	{
 		Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(Tiles::State::Flagged);
