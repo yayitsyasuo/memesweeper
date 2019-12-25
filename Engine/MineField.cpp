@@ -66,7 +66,12 @@ void MineField::Draw(Graphics& gfx)
 			{
 				SpriteCodex::DrawTile0(GivePos(x), gfx);
 				SpriteCodex::DrawTileBombRed(GivePos(x), gfx);
-				ufucked = true;
+				if (just_once)
+				{
+					ufucked = true;
+					snd.Play();
+					just_once = false;
+				}
 			}
 			else if (Tiles[x].nNeighboursGimme() == 0)
 			{

@@ -2,6 +2,7 @@
 #include "Vei2.h"
 #include "Graphics.h"
 #include "SpriteCodex.h"
+#include "Sound.h"
 class MineField
 {
 public:
@@ -40,7 +41,9 @@ private:
 	static constexpr int height = 18;
 	static constexpr int width = 18;
 	bool ufucked = false;
+	bool just_once = true; // awkward but fuk it
 	int hiddenBois = 0;
+	Sound snd = Sound(L"spayed.wav");
 	// Tiles::State Tiles[height*width] = { Tiles::State::Hidden }; would be cool but this way
 	// I cannot use any function inside Tiles
 	// Would be still fine but switch doesn't allow twice the same case 
