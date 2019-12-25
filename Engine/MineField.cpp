@@ -11,7 +11,7 @@ MineField::MineField()
 	countNeighbours();
 }
 
-Vei2 MineField::GivePos(const int a) const
+Vei2 MineField::GivePos(const int a) const // converts into coordinates
 {
 	assert(a >= 0);
 	assert(a <= width*height);
@@ -29,7 +29,7 @@ void MineField::Draw(Graphics& gfx)
 {
 	DrawBackground(gfx);
 	int x = 0;
-	while (x != (height * width + 1))
+	while (x != (height * width))
 	{
 		switch (Tiles[x].returnState())
 		{
@@ -85,42 +85,48 @@ void MineField::SpawnBOOM()
 	
 	std::random_device koursi;
 	std::mt19937 rng(koursi());
-   std::uniform_int_distribution<int> yDist(0,height);
-   std::uniform_int_distribution<int> xDist(0, width);
+   std::uniform_int_distribution<int> yDist(0,height*width);
    
-   Tiles[ yDist( rng ) * width +  xDist( rng ) ].HasBomb = true;
+   Tiles[ yDist( rng ) ].HasBomb = true;
 }
 
 bool MineField::InsideTheField(const Vei2 & pos) const
 {
-	return pos.x <= width*SpriteCodex::tileSize && pos.y < height*SpriteCodex::tileSize;
+	return pos.x <= width * SpriteCodex::tileSize && pos.y < height*SpriteCodex::tileSize
+		&& pos.x >= 0 && pos.y >= 0;
 }
 
 void MineField::countNeighbours()
 { 
-	for (int x = width + 1; x <= height * width - width - 1; x++)
+	for (int x = 0; x <= height * width; x++)
 	{
 		if (!Tiles[x].HasBomb)
 		{
-			int top = (x - width);
-			int bottom = (x + width);
+			const int top = (x - width);
+			const int bottom = (x + width);
 
-			if (Tiles[top].HasBomb)
+
+			if (Tiles[top].HasBomb && InsideTheField(GivePos(top)))
 				Tiles[x].nNeighboursIncrease();
-			if (Tiles[top - 1].HasBomb)
+			if (Tiles[top - 1].HasBomb && InsideTheField(GivePos(top-1)))
 				Tiles[x].nNeighboursIncrease();
-			if (Tiles[top + 1].HasBomb)
+			if (Tiles[top + 1].HasBomb && InsideTheField(GivePos(top+1)))
 				Tiles[x].nNeighboursIncrease();
-			if (Tiles[x + 1].HasBomb)
+			
+			
+			if (Tiles[x + 1].HasBomb && InsideTheField(GivePos(x+1)) && GivePos(x + 1).y == GivePos(x).y  ) // You wouldn't get it
 				Tiles[x].nNeighboursIncrease();
-			if (Tiles[x - 1].HasBomb)
+			if (Tiles[x - 1].HasBomb && InsideTheField(GivePos(x-1)) && GivePos(x - 1).y == GivePos(x).y )
 				Tiles[x].nNeighboursIncrease();
-			if (Tiles[bottom].HasBomb)
+
+		
+			if (Tiles[bottom].HasBomb && InsideTheField(GivePos(bottom)))
 				Tiles[x].nNeighboursIncrease();
-			if (Tiles[bottom + 1].HasBomb)
+			if (Tiles[bottom + 1].HasBomb && InsideTheField(GivePos(bottom+1)))
 				Tiles[x].nNeighboursIncrease();
-			if (Tiles[bottom - 1].HasBomb)
+			if (Tiles[bottom - 1].HasBomb && InsideTheField(GivePos(bottom-1)))
 				Tiles[x].nNeighboursIncrease();
+			
 		}
 	}
 }

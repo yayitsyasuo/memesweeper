@@ -24,7 +24,7 @@ public:
 	};
 public:
 	MineField();
-	Vei2 GivePos(const int x) const;
+	Vei2 GivePos(const int x) const; // converts into coordinates
 	void Draw(Graphics& gfx);
 	void DrawBackground(Graphics& gfx);
 	void SpawnBOOM();
