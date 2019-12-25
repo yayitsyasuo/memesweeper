@@ -32,10 +32,12 @@ public:
 	void ChangeStateToFlagged(const Vei2& pos); // // flagged needs tile to be hidden
 	bool InsideTheField(const Vei2& pos) const; // that universal Update won't work here
 	void countNeighbours();
+	bool amifucked();
 	//Tiles::State ReturnState();
 private:
 	static constexpr int height = 18;
 	static constexpr int width = 18;
+	bool ufucked = false;
 	// Tiles::State Tiles[height*width] = { Tiles::State::Hidden }; would be cool but this way
 	// I cannot use any function inside Tiles
 	// Would be still fine but switch doesn't allow twice the same case 

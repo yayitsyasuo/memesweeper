@@ -35,16 +35,32 @@ void MineField::Draw(Graphics& gfx)
 		{
 		case Tiles::State::Hidden:
 			SpriteCodex::DrawTileButton(GivePos(x), gfx);
+			if (ufucked)
+			{
+				if (Tiles[x].HasBomb)
+					SpriteCodex::DrawTileBomb(GivePos(x), gfx);
+			}
 			break;
 		case Tiles::State::Flagged:
-			SpriteCodex::DrawTileButton(GivePos(x), gfx);
-			SpriteCodex::DrawTileFlag(GivePos(x), gfx);
+			if (ufucked)
+			{
+				SpriteCodex::DrawTileBomb(GivePos(x), gfx);
+				if(!Tiles[x].HasBomb)
+				SpriteCodex::DrawTileCross(GivePos(x), gfx);
+				else 
+					SpriteCodex::DrawTileFlag(GivePos(x), gfx);
+			}
+			else {
+				SpriteCodex::DrawTileButton(GivePos(x), gfx);
+				SpriteCodex::DrawTileFlag(GivePos(x), gfx);
+			}
 			break;
 		case Tiles::State::Revealed:
 			if (Tiles[x].HasBomb)
 			{
 				SpriteCodex::DrawTile0(GivePos(x), gfx);
-				SpriteCodex::DrawTileBomb(GivePos(x), gfx);
+				SpriteCodex::DrawTileBombRed(GivePos(x), gfx);
+				ufucked = true;
 			}
 			else if (Tiles[x].nNeighboursGimme() == 0)
 			{
@@ -129,6 +145,11 @@ void MineField::countNeighbours()
 			
 		}
 	}
+}
+
+bool MineField::amifucked()
+{
+	return ufucked;
 }
 
 void MineField::ChangeState(const Vei2& pos, const Tiles::State newState)

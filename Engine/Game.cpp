@@ -38,32 +38,24 @@ void Game::Go()
 
 void Game::UpdateModel()
 { 
-	//just a test
-	for (int x = 0; x < 300; x++)
+	if (!meme.amifucked())
 	{
-		for (int y = 0; y < 300; y++)
+		while (!wnd.mouse.IsEmpty())
 		{
-			Vei2 pos = { x,y };
-			meme.ChangeState(pos, MineField::Tiles::State::Revealed);
-		}
-	}
-	// just a test
-
-	while (!wnd.mouse.IsEmpty())
-	{
-		const auto e = wnd.mouse.Read();
-		if (e.GetType() == Mouse::Event::Type::LPress)
-		{
-			Vei2 pos = Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY());
-			if (meme.InsideTheField(pos))
-				meme.ChangeState(pos, MineField::Tiles::State::Revealed);
-		}
-		else if (e.GetType() == Mouse::Event::Type::RPress)
-		{
-			Vei2 pos = Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY());
-			if (meme.InsideTheField(pos))
+			const auto e = wnd.mouse.Read();
+			if (e.GetType() == Mouse::Event::Type::LPress)
 			{
-				meme.ChangeStateToFlagged(pos);
+				Vei2 pos = Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY());
+				if (meme.InsideTheField(pos))
+					meme.ChangeState(pos, MineField::Tiles::State::Revealed);
+			}
+			else if (e.GetType() == Mouse::Event::Type::RPress)
+			{
+				Vei2 pos = Vei2(wnd.mouse.GetPosX(), wnd.mouse.GetPosY());
+				if (meme.InsideTheField(pos))
+				{
+					meme.ChangeStateToFlagged(pos);
+				}
 			}
 		}
 	}
