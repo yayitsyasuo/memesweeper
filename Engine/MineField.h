@@ -38,8 +38,8 @@ public:
 private:
 	const Vei2 CenteredTopLeft = { 250, 150 };
 	const Vei2 CenteredBottomRight = { 250 + height*SpriteCodex::tileSize, 150 + height * SpriteCodex::tileSize };
-	static constexpr int height = 18;
-	static constexpr int width = 18;
+	static constexpr int height = 5;
+	static constexpr int width = 5;
 	bool ufucked = false;
 	bool just_once = true; // awkward but fuk it
 	int hiddenBois = 0;
