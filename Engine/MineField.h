@@ -30,10 +30,11 @@ public:
 	void DrawBackground(Graphics& gfx);
 	void SpawnBOOM();
 	void ChangeState(const Vei2& pos, const Tiles::State newState);
-	void ChangeStateToFlagged(const Vei2& pos); // // flagged needs tile to be hidden
+	void ChangeStateToFlagged(const Vei2& pos); // // flagged needs tile to be hidden Or ChangeStateToDeFlagged
 	bool InsideTheField(const Vei2& pos) const; // that universal Update won't work here
 	void countNeighbours();
 	bool amifucked();
+	bool WinCondition();
 	//Tiles::State ReturnState();
 private:
 	const Vei2 CenteredTopLeft = { 250, 150 };

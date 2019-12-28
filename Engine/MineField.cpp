@@ -113,7 +113,7 @@ void MineField::SpawnBOOM()
 	
 	std::random_device koursi;
 	std::mt19937 rng(koursi());
-   std::uniform_int_distribution<int> yDist(0,height*width);
+   std::uniform_int_distribution<int> yDist(0,height*width - 1); // -1 cause grid start from 0
    
    Tiles[ yDist( rng ) ].HasBomb = true;
 }
@@ -138,9 +138,9 @@ void MineField::countNeighbours()
 
 			if (InsideTheField(GivePos(top)))
 				Tiles[top].nNeighboursIncrease();
-			if (InsideTheField(GivePos(top - 1)))
+			if (InsideTheField(GivePos(top - 1)) && GivePos(top - 1).y == GivePos(top).y)
 				Tiles[top - 1].nNeighboursIncrease();
-			if (InsideTheField(GivePos(top + 1)))
+			if (InsideTheField(GivePos(top + 1)) && GivePos(top + 1).y == GivePos(top).y)
 				Tiles[top + 1].nNeighboursIncrease();
 				
 			
@@ -164,6 +164,11 @@ void MineField::countNeighbours()
 bool MineField::amifucked()
 {
 	return ufucked;
+}
+
+bool MineField::WinCondition()
+{
+	return hiddenBois == 0;
 }
 
 void MineField::ChangeState(const Vei2& pos, const Tiles::State newState)
@@ -191,5 +196,7 @@ void MineField::ChangeStateToFlagged(const Vei2& pos)
 	if (Tiles[ConvertedPos.y*width + ConvertedPos.x].returnState() == Tiles::State::Hidden) // flagged needs tile to be hidden
 	{
 		Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(Tiles::State::Flagged);
-	}
+	}else
+		Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(Tiles::State::Hidden);
+	
 }

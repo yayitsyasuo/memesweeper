@@ -40,7 +40,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 { 
-	if (!meme.amifucked())
+	if (!meme.amifucked() && !meme.WinCondition())
 	{
 		while (!wnd.mouse.IsEmpty())
 		{
