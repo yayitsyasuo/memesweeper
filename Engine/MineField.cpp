@@ -129,41 +129,34 @@ void MineField::countNeighbours()
 { 
 	for (int x = 0; x <= height * width; x++)
 	{
-		if (!Tiles[x].HasBomb)
+		if (Tiles[x].HasBomb)
 		{
-			const int top = (x - width);
-			const int bottom = (x + width);
-			const int right = std::min(height*width,x+1);
-			const int left = std::max(0,(x - 1));
+			const int top = x - width;
+			const int bottom = x + width;
+			const int right = x + 1;
+			const int left = x - 1;
 
+			if (InsideTheField(GivePos(top)))
+				Tiles[top].nNeighboursIncrease();
+			if (InsideTheField(GivePos(top - 1)))
+				Tiles[top - 1].nNeighboursIncrease();
+			if (InsideTheField(GivePos(top + 1)))
+				Tiles[top + 1].nNeighboursIncrease();
+				
+			
+			if (InsideTheField(GivePos(right)) && GivePos(right).y == GivePos(x).y  ) // You wouldn't get it
+				Tiles[right].nNeighboursIncrease();
+			if (InsideTheField(GivePos(left)) && GivePos(left).y == GivePos(x).y)
+				Tiles[left].nNeighboursIncrease();
 
-			if (top >= 0) // assert inside GivePos doesn't allow negativee shit
-			{
-				if (Tiles[top].HasBomb && InsideTheField(GivePos(top)))
-					Tiles[x].nNeighboursIncrease();
-				if (Tiles[top - 1].HasBomb && InsideTheField(GivePos(top - 1)))
-					Tiles[x].nNeighboursIncrease();
-				if (Tiles[top + 1].HasBomb && InsideTheField(GivePos(top + 1)))
-					Tiles[x].nNeighboursIncrease();
-			}
+				
+			if (InsideTheField(GivePos(bottom)))
+				Tiles[bottom].nNeighboursIncrease();
+			if (InsideTheField(GivePos(bottom + 1)) && GivePos(bottom + 1).y == GivePos(bottom).y)
+				Tiles[bottom+1].nNeighboursIncrease();
+			if (InsideTheField(GivePos(bottom - 1)) && GivePos(bottom - 1).y == GivePos(bottom).y)
+					Tiles[bottom-1].nNeighboursIncrease();
 			
-			
-			
-			if (Tiles[right].HasBomb && InsideTheField(GivePos(right)) && GivePos(right).y == GivePos(x).y  ) // You wouldn't get it
-				Tiles[x].nNeighboursIncrease();
-			if (Tiles[left].HasBomb && InsideTheField(GivePos(left)) && GivePos(left).y == GivePos(x).y )
-				Tiles[x].nNeighboursIncrease();
-
-		
-			if (bottom <= height * width) // assert inside GivePos doesn't allow that big shit
-			{
-				if (Tiles[bottom].HasBomb && InsideTheField(GivePos(bottom)))
-					Tiles[x].nNeighboursIncrease();
-				if (Tiles[bottom + 1].HasBomb && InsideTheField(GivePos(bottom + 1)))
-					Tiles[x].nNeighboursIncrease();
-				if (Tiles[bottom - 1].HasBomb && InsideTheField(GivePos(bottom - 1)))
-					Tiles[x].nNeighboursIncrease();
-			}
 		}
 	}
 }
