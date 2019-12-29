@@ -176,6 +176,10 @@ bool MineField::WinCondition()
 
 void MineField::RevealStuffButBomb(const Vei2& pos)
 {
+
+	if (pos.x < 1 || pos.y < 1 || pos.x > width - 1 || pos.y > height - 1)
+		return;
+
 	if (Tiles[pos.y * width + pos.x].nNeighboursGimme() == 0) // no number = no bombs nearby
 	{
 		Vei2 newPos = pos - Vei2 (1,1);
@@ -185,7 +189,7 @@ void MineField::RevealStuffButBomb(const Vei2& pos)
 			{
 				//here's the shit it does
 				ChangeState(newPos, Tiles::State::Revealed);
-				// RevealStuffButBomb( newPos );
+				RevealStuffButBomb( newPos );
 			}
 		}
 	}
