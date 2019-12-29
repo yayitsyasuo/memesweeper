@@ -41,9 +41,11 @@ private:
 	const Vei2 CenteredBottomRight = { 250 + height*SpriteCodex::tileSize, 150 + height * SpriteCodex::tileSize };
 	static constexpr int height = 5;
 	static constexpr int width = 5;
+	static constexpr int nBombs = 4;
 	bool ufucked = false;
 	bool just_once = true; // awkward but fuk it
 	int hiddenBois = 0;
+	int flaggedBois = 0;
 	Sound snd = Sound(L"spayed.wav");
 	// Tiles::State Tiles[height*width] = { Tiles::State::Hidden }; would be cool but this way
 	// I cannot use any function inside Tiles

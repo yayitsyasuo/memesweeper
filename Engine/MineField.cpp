@@ -6,7 +6,7 @@
 
 MineField::MineField()
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < nBombs; i++)
 		SpawnBOOM();
 	countNeighbours();
 }
@@ -29,11 +29,12 @@ void MineField::Draw(Graphics& gfx)
 {
 	DrawBackground(gfx);
 	int x = 0;
-	if (hiddenBois == 0) // win condition drawing?
+	if (WinCondition()) // win condition drawing?
 	{
 		SpriteCodex::DrawWin(Vei2 (350, 300), gfx);
 	}
-	hiddenBois = 0;
+	hiddenBois = 0;    // things for win condition
+	flaggedBois = 0;   // things for win condition
 	while (x != (height * width))
 	{
 		switch (Tiles[x].returnState())
@@ -57,6 +58,7 @@ void MineField::Draw(Graphics& gfx)
 					SpriteCodex::DrawTileFlag(GivePos(x), gfx);
 			}
 			else {
+				flaggedBois++;
 				SpriteCodex::DrawTileButton(GivePos(x), gfx);
 				SpriteCodex::DrawTileFlag(GivePos(x), gfx);
 			}
@@ -168,7 +170,8 @@ bool MineField::amifucked()
 
 bool MineField::WinCondition()
 {
-	return hiddenBois == 0;
+
+	return hiddenBois == 0 && flaggedBois == nBombs;
 }
 
 void MineField::ChangeState(const Vei2& pos, const Tiles::State newState)
