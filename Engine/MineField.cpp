@@ -13,8 +13,8 @@ MineField::MineField()
 
 Vei2 MineField::GivePos(const int a) const // converts into coordinates
 {
-	assert(a >= 0);
-	assert(a <= width*height);
+//	assert(a >= 0);
+//	assert(a <= width*height);
 	if (a >= width)
 	{
 		int y =  a / width ;
@@ -174,14 +174,35 @@ bool MineField::WinCondition()
 	return hiddenBois == 0 && flaggedBois == nBombs;
 }
 
+void MineField::RevealStuffButBomb(const Vei2& pos)
+{
+	if (Tiles[pos.y * width + pos.x].nNeighboursGimme() == 0) // no number = no bombs nearby
+	{
+		Vei2 newPos = pos - Vei2 (1,1);
+		for (newPos.y; newPos.y <= 1 + pos.y; newPos.y++) //repeat 3 times
+		{
+			for (newPos.x = pos.x - 1; newPos.x <= 1 + pos.x; newPos.x++)
+			{
+				//here's the shit it does
+				ChangeState(newPos, Tiles::State::Revealed);
+				// RevealStuffButBomb( newPos );
+			}
+		}
+	}
+	else
+		return;
+
+}
+
 void MineField::ChangeState(const Vei2& pos, const Tiles::State newState)
 {
-	assert(pos.x <= CenteredTopLeft.x + width * SpriteCodex::tileSize);
-	assert(pos.y <= CenteredTopLeft.y + height * SpriteCodex::tileSize);
+	assert(pos.x <= width);
+	assert(pos.y <= height);
+	assert(pos.x >= 0);
+	assert(pos.y >= 0);
 
 	// plane was at first in the left top corner
-	Vei2 ConvertedPos =( pos - CenteredTopLeft ) / SpriteCodex::tileSize; // you wouldn't get it
-	Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(newState);
+	Tiles[pos.y*width + pos.x].UpdateState(newState);
 }
 
 MineField::Tiles::State MineField::Tiles::returnState() const
