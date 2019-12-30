@@ -90,10 +90,7 @@ void MineField::Draw(Graphics& gfx)
 
 void MineField::Tiles::UpdateState(const State Newstate)
 {
-	// assert(state == Tiles::State::Revealed && Newstate == Tiles::State::Revealed);
-	if (state == Tiles::State::Revealed && Newstate == Tiles::State::Revealed)
-	{
-	}else
+	assert(state == Tiles::State::Revealed && Newstate == Tiles::State::Revealed); // motherfucker
 	state = Newstate;
 }
 
@@ -180,7 +177,11 @@ bool MineField::WinCondition()
 
 void MineField::RevealStuffButBomb(const Vei2& pos)
 {
-	if (Tiles[pos.y * height + pos.x].nNeighboursGimme()==0)
+	if (Tiles[pos.y * height + pos.x].nNeighboursGimme() > 0 &&
+		!(Tiles[pos.y * height + pos.x].returnState() == Tiles::State::Revealed))
+		ChangeState(pos, Tiles::State::Revealed);
+	else if (Tiles[pos.y * height + pos.x].nNeighboursGimme()==0 &&
+		!(Tiles[pos.y * height + pos.x].returnState() == Tiles::State::Revealed))
 	{
 		ChangeState(pos, Tiles::State::Revealed);
 
@@ -196,7 +197,6 @@ void MineField::RevealStuffButBomb(const Vei2& pos)
 				RevealStuffButBomb(pos);
 			}
 		}
-
 	}
 }
 
