@@ -35,7 +35,7 @@ public:
 	void countNeighbours();
 	bool amifucked();
 	bool WinCondition();
-	void RevealStuffButBomb(const int x);
+	void RevealStuffButBomb(const Vei2& pos);
 	const Vei2 CenteredTopLeft = { 250, 150 };
 private:
 //	const Vei2 CenteredTopLeft = { 250, 150 };

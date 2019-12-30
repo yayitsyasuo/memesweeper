@@ -90,6 +90,10 @@ void MineField::Draw(Graphics& gfx)
 
 void MineField::Tiles::UpdateState(const State Newstate)
 {
+	// assert(state == Tiles::State::Revealed && Newstate == Tiles::State::Revealed);
+	if (state == Tiles::State::Revealed && Newstate == Tiles::State::Revealed)
+	{
+	}else
 	state = Newstate;
 }
 
@@ -174,44 +178,24 @@ bool MineField::WinCondition()
 	return hiddenBois == 0 && flaggedBois == nBombs;
 }
 
-void MineField::RevealStuffButBomb(const int x)
+void MineField::RevealStuffButBomb(const Vei2& pos)
 {
-	if (Tiles[x].nNeighboursGimme()==0)
+	if (Tiles[pos.y * height + pos.x].nNeighboursGimme()==0)
 	{
-		const int top = x - width;
-		const int bottom = x + width;
-		const int right = x + 1;
-		const int left = x - 1;
+		ChangeState(pos, Tiles::State::Revealed);
 
-		if (InsideTheField(GivePos(top)))
+		int xStart = std::max(0,pos.x - 1);
+		int yStart = std::max(0, pos.y - 1);
+		int xEnd = std::min(width - 1, pos.x + 1);
+		int yEnd = std::min(width - 1, pos.y + 1);
+
+		for (Vei2 pos = { xStart, yStart }; pos.y <= yEnd; pos.y++)
 		{
-			Tiles[top].UpdateState(Tiles::State::Revealed);
-			RevealStuffButBomb(top);
+			for (pos.x = xStart; pos.x <= xEnd; pos.x++)
+			{
+				RevealStuffButBomb(pos);
+			}
 		}
-		if (InsideTheField(GivePos(top - 1)) && GivePos(top - 1).y == GivePos(top).y)
-		{
-			Tiles[top-1].UpdateState(Tiles::State::Revealed);
-			Tiles[top - 1].UpdateState(Tiles::State::Revealed);
-		}
-		if (InsideTheField(GivePos(top + 1)) && GivePos(top + 1).y == GivePos(top).y)
-		{
-			Tiles[top + 1].UpdateState(Tiles::State::Revealed);
-			Tiles[top + 1].UpdateState(Tiles::State::Revealed);
-		}
-
-
-		if (InsideTheField(GivePos(right)) && GivePos(right).y == GivePos(x).y) // You wouldn't get it
-			Tiles[right].UpdateState(Tiles::State::Revealed);
-		if (InsideTheField(GivePos(left)) && GivePos(left).y == GivePos(x).y)
-			Tiles[left].UpdateState(Tiles::State::Revealed);
-
-
-		if (InsideTheField(GivePos(bottom)))
-			Tiles[bottom].UpdateState(Tiles::State::Revealed);
-		if (InsideTheField(GivePos(bottom + 1)) && GivePos(bottom + 1).y == GivePos(bottom).y)
-			Tiles[bottom + 1].UpdateState(Tiles::State::Revealed);
-		if (InsideTheField(GivePos(bottom - 1)) && GivePos(bottom - 1).y == GivePos(bottom).y)
-			Tiles[bottom - 1].UpdateState(Tiles::State::Revealed);
 
 	}
 }
