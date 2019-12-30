@@ -174,28 +174,46 @@ bool MineField::WinCondition()
 	return hiddenBois == 0 && flaggedBois == nBombs;
 }
 
-void MineField::RevealStuffButBomb(const Vei2& pos)
+void MineField::RevealStuffButBomb(const int x)
 {
-
-	if (pos.x < 1 || pos.y < 1 || pos.x > width - 1 || pos.y > height - 1)
-		return;
-
-	if (Tiles[pos.y * width + pos.x].nNeighboursGimme() == 0) // no number = no bombs nearby
+	if (Tiles[x].nNeighboursGimme()==0)
 	{
-		Vei2 newPos = pos - Vei2 (1,1);
-		for (newPos.y; newPos.y <= 1 + pos.y; newPos.y++) //repeat 3 times
-		{
-			for (newPos.x = pos.x - 1; newPos.x <= 1 + pos.x; newPos.x++)
-			{
-				//here's the shit it does
-				ChangeState(newPos, Tiles::State::Revealed);
-				RevealStuffButBomb( newPos );
-			}
-		}
-	}
-	else
-		return;
+		const int top = x - width;
+		const int bottom = x + width;
+		const int right = x + 1;
+		const int left = x - 1;
 
+		if (InsideTheField(GivePos(top)))
+		{
+			Tiles[top].UpdateState(Tiles::State::Revealed);
+			RevealStuffButBomb(top);
+		}
+		if (InsideTheField(GivePos(top - 1)) && GivePos(top - 1).y == GivePos(top).y)
+		{
+			Tiles[top-1].UpdateState(Tiles::State::Revealed);
+			Tiles[top - 1].UpdateState(Tiles::State::Revealed);
+		}
+		if (InsideTheField(GivePos(top + 1)) && GivePos(top + 1).y == GivePos(top).y)
+		{
+			Tiles[top + 1].UpdateState(Tiles::State::Revealed);
+			Tiles[top + 1].UpdateState(Tiles::State::Revealed);
+		}
+
+
+		if (InsideTheField(GivePos(right)) && GivePos(right).y == GivePos(x).y) // You wouldn't get it
+			Tiles[right].UpdateState(Tiles::State::Revealed);
+		if (InsideTheField(GivePos(left)) && GivePos(left).y == GivePos(x).y)
+			Tiles[left].UpdateState(Tiles::State::Revealed);
+
+
+		if (InsideTheField(GivePos(bottom)))
+			Tiles[bottom].UpdateState(Tiles::State::Revealed);
+		if (InsideTheField(GivePos(bottom + 1)) && GivePos(bottom + 1).y == GivePos(bottom).y)
+			Tiles[bottom + 1].UpdateState(Tiles::State::Revealed);
+		if (InsideTheField(GivePos(bottom - 1)) && GivePos(bottom - 1).y == GivePos(bottom).y)
+			Tiles[bottom - 1].UpdateState(Tiles::State::Revealed);
+
+	}
 }
 
 void MineField::ChangeState(const Vei2& pos, const Tiles::State newState)

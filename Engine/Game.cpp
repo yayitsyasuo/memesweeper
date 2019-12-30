@@ -52,7 +52,8 @@ void Game::UpdateModel()
 				{
 					Vei2 ConvertedPos = (pos - meme.CenteredTopLeft) / SpriteCodex::tileSize; // please create such function
 					 // meme.ChangeState(pos, MineField::Tiles::State::Revealed);
-					meme.RevealStuffButBomb(ConvertedPos);
+					int x = ConvertedPos.y * 15 + ConvertedPos.x;
+					meme.RevealStuffButBomb(x);
 				}
 			}
 			else if (e.GetType() == Mouse::Event::Type::RPress)
