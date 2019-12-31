@@ -49,7 +49,7 @@ void MineField::Draw(Graphics& gfx)
 			}
 			break;
 		case Tiles::State::Flagged:
-			if (ufucked)
+			if (ufucked) // show up after loss
 			{
 				SpriteCodex::DrawTileBomb(GivePos(x), gfx);
 				if(!Tiles[x].HasBomb)
@@ -57,7 +57,8 @@ void MineField::Draw(Graphics& gfx)
 				else 
 					SpriteCodex::DrawTileFlag(GivePos(x), gfx);
 			}
-			else {
+			else
+			{
 				flaggedBois++;
 				SpriteCodex::DrawTileButton(GivePos(x), gfx);
 				SpriteCodex::DrawTileFlag(GivePos(x), gfx);
@@ -171,7 +172,6 @@ bool MineField::amifucked()
 
 bool MineField::WinCondition()
 {
-
 	return hiddenBois == 0 && flaggedBois == nBombs;
 }
 
@@ -226,7 +226,7 @@ void MineField::ChangeStateToFlagged(const Vei2& pos)
 	if (Tiles[ConvertedPos.y*width + ConvertedPos.x].returnState() == Tiles::State::Hidden) // flagged needs tile to be hidden
 	{
 		Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(Tiles::State::Flagged);
-	}else
+	}else if (Tiles[ConvertedPos.y*width + ConvertedPos.x].returnState() == Tiles::State::Flagged ) // flagged needs to be on wiped bricks
 		Tiles[ConvertedPos.y*width + ConvertedPos.x].UpdateState(Tiles::State::Hidden);
 	
 }
